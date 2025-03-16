@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: short
+  namespace: url
+  labels:
+    app: short
+spec:
+  # do not include replicas in the manifests if you want replicas to be controlled by HPA
+  replicas: 2
+  revisionHistoryLimit: 3  # default value is 10
+  selector:
+    matchLabels:
+      app: short
+  template:
+    metadata:
+      labels:
+        app: short
+    spec:
+      serviceAccountName: short
+      containers:
+        - name: short
+          image: 479083420128.dkr.ecr.ap-northeast-2.amazonaws.com/short:latest
+          ports:
+            - containerPort: 8080
+          # env:
+          #   - name: TEST
+          #     value: "Hello, World!"
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "500Mi"
+            limits:
+              cpu: "500m"
+              memory: "1000Mi"
+          # command:  # override Dockerfile `ENTRYPOINT`
+          #   - ""
+          #   - ""
+          args:     # override Dockerfile `CMD`
+            - "--uid"
+            - "uid:8080"
+          # readinessProbe:
+          #   httpGet:
+          #     path: /health
+          #     port: 80
+          #   initialDelaySeconds: 15
+          # livenessProbe:
+          #   httpGet:
+          #     path: /health
+          #     port: 80
+          #   initialDelaySeconds: 30
+          # lifecycle:
+          #   preStop:
+          #     exec:
+          #       command: ["/bin/sh", "-c", "sleep 60"]
+          # volumeMounts:
+          #   - name: volume-1
+          #     mountPath: "/mnt/volume-1"
+          #     readOnly: true
+      # terminationGracePeriodSeconds: 60
+      # volumes:
+      #   - name: volume-1
+      #     emptyDir: {}
+      # tolerations:
+      #   - key: "key1"         # taint key
+      #     value: "value1"     # taint value
+      #     operator: "Equal"
+      #     effect: "NoSchedule"
+      # nodeSelector:
+      #   key: value            # node label key and value
+      # topologySpreadConstraints:
+      #   - maxSkew: 1
+      #     whenUnsatisfiable: DoNotSchedule
+      #     topologyKey: topology.kubernetes.io/zone
+      #     labelSelector:
+      #       matchLabels:
+      #         app: short
