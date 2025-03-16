@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: short
+  namespace: url
+spec:
+  hosts:
+  - "eventengine.kr"
+  gateways:
+  - short
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: short
+        port:
+          number: 8080

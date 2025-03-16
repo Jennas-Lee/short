@@ -4,6 +4,8 @@ resources:
   - serviceaccount.yaml
   - deployment.yaml
   - service.yaml
+  - gateway.yaml
+  - virtualservice.yaml
 # images:
 #   - name: <IMAGE NAME>  # ex. nginx
 #     # newName: <NEW IMAGE NAME>
